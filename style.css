@@ -1,0 +1,143 @@
+/* ===================== ANIMASI GLOBAL ===================== */
+
+.float { animation: floatAnim 4s ease-in-out infinite; }
+@keyframes floatAnim {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.glow {
+  animation: glowPulse 2.2s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0% { box-shadow: 0 0 6px rgba(255, 94, 0, 0.3); }
+  50% { box-shadow: 0 0 16px rgba(255, 94, 0, 0.6); }
+  100% { box-shadow: 0 0 6px rgba(255, 94, 0, 0.3); }
+}
+
+body {
+  animation: pageFade 0.5s ease;
+}
+@keyframes pageFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Background gradient */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #fcb69f, #ffecd2, #a1c4fd, #c2e9fb);
+  background-size: 400% 400%;
+  animation: grad 12s ease infinite alternate;
+}
+@keyframes grad {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Header */
+header {
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px);
+  padding: 18px;
+  text-align: center;
+}
+.gradient {
+  color: transparent;
+  background: linear-gradient(135deg, #0b3d0b, #4caf50);
+  -webkit-background-clip: text;
+}
+
+/* Logo */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px;
+}
+.logo-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* Buttons */
+button {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+button:hover { transform: scale(1.05); }
+button:active { transform: scale(0.92); }
+
+.btn-primary {
+  background: linear-gradient(90deg, #ff6a00, #ee0979);
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  font-weight: 700;
+  color: #fff;
+}
+.btn-outline {
+  border: 1px solid #ccc;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: white;
+}
+
+/* Container */
+.container { max-width: 1100px; margin: auto; padding: 16px; }
+
+.card {
+  background: #ffffffaa;
+  padding: 14px;
+  border-radius: 14px;
+  margin-bottom: 14px;
+}
+
+/* Produk Grid */
+.produk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+.produk {
+  background: rgba(255,255,255,0.7);
+  padding: 10px;
+  border-radius: 12px;
+  text-align: center;
+}
+.produk img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.qty-group {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* Seller Dashboard */
+.orders-list { display: flex; flex-direction: column; gap: 12px; }
+.order-card {
+  background: white;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+/* Footer */
+footer {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: 300;
+}
