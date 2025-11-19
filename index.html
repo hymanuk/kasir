@@ -854,6 +854,13 @@ document.getElementById("back-to-seller").addEventListener("click", () => {
           if(card){
             card.style.opacity = '0.6';
             card.style.textDecoration = 'line-through';
+            showToast('Ditandai selesai');
+          }
+        });
+      });
+    }
+
+    /* ---------- CLEAR ALL / EXPORT CSV ---------- */
     $('#clear-all').addEventListener('click', ()=>{
       if(!confirm('Yakin hapus semua pesanan?')) return;
       localStorage.removeItem(STORAGE_KEY);
@@ -863,13 +870,6 @@ document.getElementById("back-to-seller").addEventListener("click", () => {
 
     function ordersToCSV(orders){
       if(!orders || orders.length === 0) return '';
-            showToast('Ditandai selesai');
-          }
-        });
-      });
-    }
-
-    /* ---------- CLEAR ALL / EXPORT CSV ---------- */
       const headers = ['id','nama','waktu','items','total'];
       const rows = orders.map(o => {
         const itemsStr = o.items.map(it => `${it.title} x${it.qty}`).join('; ');
