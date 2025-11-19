@@ -396,23 +396,62 @@ footer {
   </style>
 </head>
 <body>
+<!-- ===================== BERANDA ===================== -->
+<div id="beranda" style="animation:fadein 0.6s ease;">
+
+  <div style="
+    max-width:480px;margin:60px auto;text-align:center;
+    background:rgba(255,255,255,0.25);backdrop-filter:blur(10px);
+    padding:30px;border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,0.15);
+  ">
+
+		<img src="https://c.termai.cc/i94/pR65b.png" class="logo-img" 
+		  style="width:110px;height:110px;border-radius:50%;margin-bottom:15px;animation:floatAnim 4s ease-in-out infinite;">
+
+    <h1 class="gradient" style="font-size:28px;">Kantin Kenangan</h1>
+    <p style="opacity:0.75;margin-bottom:20px;">SMAN 1 Bangkalan — Smansaba</p>
+
+    <button onclick="openPembeli()" class="btn-primary" style="width:100%;padding:14px;border-radius:12px;font-size:17px;">
+      🍽️ Masuk Sebagai Pembeli
+    </button>
+
+    <button onclick="openPenjual()" 
+      style="width:100%;padding:14px;border-radius:12px;font-size:17px;margin-top:10px;
+      background:rgba(255,255,255,0.7);border:1px solid rgba(0,0,0,0.12);cursor:pointer;font-weight:700;">
+      👤 Masuk Panel Penjual
+    </button>
+
+    <p style="margin-top:20px;font-size:12px;opacity:0.65;">
+      Made by Rifan XE-2 & Wildan XE-1
+    </p>
+  </div>
+</div>
+
+
+<!-- ===================== HALAMAN UTAMA (PEMBELI + PENJUAL) ===================== -->
+<div id="halaman-utama" style="display:none;">
+
   <header>
- <h1 class="gradient">KantinKenangan — SMAN 1 BANGKALAN</h1>
+    <h1 class="gradient">KantinKenangan — SMAN 1 BANGKALAN</h1>
   </header>
 
-<h1>
-  <div class="logo-container">
-    <img src="https://c.termai.cc/i94/pR65b.png" class="logo-img" alt="Logo">
-    <span class="logo-text">Menu Kantin Kenangan Smansaba</span>
-  </div>
-</h1>
-<div id="toast-container"></div>
-  <div class="container">
-    <nav>
-      <button id="nav-pembeli">Halaman Pembeli</button>
-      <button id="nav-penjual">Halaman Penjual</button>
-    </nav>
+  <h1>
+    <div class="logo-container">
+      <img src="https://c.termai.cc/i94/pR65b.png" class="logo-img" alt="Logo">
+      <span class="logo-text">Menu Kantin Kenangan Smansaba</span>
+    </div>
+  </h1>
 
+  <div id="toast-container"></div>
+
+  <div class="container">
+
+    <nav>
+      <button id="nav-pembeli" style="display:none">Halaman Pembeli</button>
+      <button id="nav-penjual" style="display:none">Halaman Penjual</button>
+      <button onclick="backToHome()" style="background:white;border:1px solid #ddd;">⬅ Kembali ke Beranda</button>
+    </nav>
+    
     <!-- ========== PAGE: PEMBELI ========== -->
     <main id="page-pembeli" class="card">
       <section class="center" aria-labelledby="menu-title">
@@ -435,6 +474,7 @@ footer {
         <p id="summary" class="muted" style="margin-top:8px"></p>
       </section>
     </main>
+	
 
     <!-- ========== PAGE: PENJUAL ========== -->
     <aside id="page-penjual" class="card" style="display:none">
@@ -459,16 +499,33 @@ footer {
         <div style="display:flex;gap:8px;justify-content:center;margin-bottom:8px">
           <button id="seller-logout" class="btn-outline">Logout</button>
           <button id="export-csv" class="btn-outline">Export CSV</button>
+		  <button id="struk" class="btn-outline">Print</button>
           <button id="clear-all" class="btn-primary">Hapus Semua</button>
         </div>
         <div id="orders" class="orders-list"><!-- Pesanan akan muncul di sini --></div>
       </div>
     </aside>
+	
+	<aside id="page-struk" class="card" style="display:none">
+    <section class="center">
+        <h2>🧾 Struk Pesanan</h2>
+    </section>
+
+    <div class="struk-content card">
+        <p id="struk-nama"></p>
+        <p id="struk-total"></p>
+        <p id="struk-waktu"></p>
+    </div>
+
+    <section class="center" style="margin-top:10px">
+        <button id="back-to-seller" class="btn-outline">Kembali</button>
+    </section>
+</aside>
 
     <div id="toast" style="position:fixed;right:20px;bottom:20px;padding:12px 14px;border-radius:12px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;display:none;box-shadow:0 12px 36px rgba(0,0,0,0.12)"></div>
 
     <footer>
- <h1 class="gradient" style="font.size: 16px;">Made by Rifan — SupportBy Robotik, Smansaba</h1>
+ <h1 class="gradient" style="font.size: 16px;">Made by Team 8 — RifanWildan </h1>
 </footer>
   </div>
 
@@ -482,6 +539,39 @@ footer {
      - Seller login via sessionStorage
      - Export CSV & delete
   ====================================================== */
+
+/* ============ SISTEM BERANDA ============ */
+function openPembeli(){
+  document.getElementById("beranda").style.display = "none";
+  document.getElementById("halaman-utama").style.display = "block";
+  document.getElementById("page-pembeli").style.display = "";
+  document.getElementById("page-penjual").style.display = "none";
+}
+
+function openPenjual(){
+  document.getElementById("beranda").style.display = "none";
+  document.getElementById("halaman-utama").style.display = "block";
+  document.getElementById("page-pembeli").style.display = "none";
+  document.getElementById("page-penjual").style.display = "";
+}
+
+function backToHome(){
+  document.getElementById("halaman-utama").style.display = "none";
+  document.getElementById("beranda").style.display = "block";
+}
+
+// pindah dari page-penjual → page-struk
+document.getElementById("struk").addEventListener("click", () => {
+
+    // sembunyikan page penjual
+    document.getElementById("seller-dashboard").style.display = "none";
+	document.getElementById("page-penjual").style.display = "none";
+
+    // tampilkan page struk
+    document.getElementById("page-struk").style.display = "block";
+});
+
+
 
   (function(){
     'use strict';
@@ -549,6 +639,7 @@ footer {
         produkGrid.appendChild(el);
       });
     }
+	
     renderProduk();
 
     /* ---------- PEMESANAN ---------- */
@@ -643,6 +734,7 @@ footer {
     /* ---------- NAVIGATION ---------- */
     $('#nav-pembeli').addEventListener('click', ()=>{ $('#page-pembeli').style.display = ''; $('#page-penjual').style.display = 'none'; });
     $('#nav-penjual').addEventListener('click', ()=>{ $('#page-pembeli').style.display = 'none'; $('#page-penjual').style.display = ''; checkSellerAuth(); });
+	$('#struk').addEventListener('click', ()=>{ $('#page-struk').style.display = ''; $('#seller-dashboard').style.display = 'none'; });
 
     /* ---------- SELLER AUTH & DASHBOARD ---------- */
     function checkSellerAuth(){
@@ -711,6 +803,38 @@ footer {
         `;
         ordersEl.appendChild(card);
       });
+	  
+	  function escapeHtml(text) {
+    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+    return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+// format angka ke IDR
+function formatIDR(number) {
+    return number.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 });
+}
+
+// inisialisasi struk
+(function initStruk() {
+    const orders = loadOrders(); // pastikan fungsi ini sudah ada
+    if(orders.length){
+        const last = orders[orders.length - 1];
+        document.getElementById('struk-nama').innerHTML = `Nama: <strong>${escapeHtml(last.nama)}</strong>`;
+        document.getElementById('struk-total').innerHTML = `Total: <strong>${formatIDR(last.total)}</strong>`;
+        document.getElementById('struk-waktu').innerHTML = `Waktu: <strong>${escapeHtml(last.waktu)}</strong>`;
+    } else {
+        document.getElementById('struk-nama').textContent = "Belum ada pesanan";
+        document.getElementById('struk-total').textContent = "";
+        document.getElementById('struk-waktu').textContent = "";
+    }
+})();
+
+// tombol kembali ke dashboard
+document.getElementById("back-to-seller").addEventListener("click", () => {
+    document.getElementById("page-struk").style.display = "none";
+	document.getElementById("page-penjual").style.display = "block";
+    document.getElementById("seller-dashboard").style.display = "block";	
+});
 
       // event delegasi untuk delete & mark
       ordersEl.querySelectorAll('.btn-delete').forEach(btn=>{
@@ -730,13 +854,6 @@ footer {
           if(card){
             card.style.opacity = '0.6';
             card.style.textDecoration = 'line-through';
-            showToast('Ditandai selesai');
-          }
-        });
-      });
-    }
-
-    /* ---------- CLEAR ALL / EXPORT CSV ---------- */
     $('#clear-all').addEventListener('click', ()=>{
       if(!confirm('Yakin hapus semua pesanan?')) return;
       localStorage.removeItem(STORAGE_KEY);
@@ -746,6 +863,13 @@ footer {
 
     function ordersToCSV(orders){
       if(!orders || orders.length === 0) return '';
+            showToast('Ditandai selesai');
+          }
+        });
+      });
+    }
+
+    /* ---------- CLEAR ALL / EXPORT CSV ---------- */
       const headers = ['id','nama','waktu','items','total'];
       const rows = orders.map(o => {
         const itemsStr = o.items.map(it => `${it.title} x${it.qty}`).join('; ');
