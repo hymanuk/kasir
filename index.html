@@ -3,24 +3,410 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>KantinKenangan — SMAN 1 BANGKALAN</title>
-  <link rel="stylesheet" href="style.css" />
-  <meta name="description" content="Kantin SMAN 1 BANGKALAN — Sistem Pemesanan" />
+  <title>FannStore — Improved (Clean & Fixed)</title>
+  <meta name="description" content="FannStore menu — improved, fixed, single-file" />
+  <style>
+/* ===================== ANIMASI GLOBAL ===================== */
+
+/* Float (melayang lembut) */
+.float {
+  animation: floatAnim 4s ease-in-out infinite;
+}
+@keyframes floatAnim {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* Glow Pulse */
+.glow {
+  animation: glowPulse 2.2s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%   { box-shadow: 0 0 6px rgba(255, 94, 0, 0.3); }
+  50%  { box-shadow: 0 0 16px rgba(255, 94, 0, 0.6); }
+  100% { box-shadow: 0 0 6px rgba(255, 94, 0, 0.3); }
+}
+
+/* Page Fade */
+body {
+  animation: pageFade 0.5s ease;
+}
+@keyframes pageFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Moving Gradient Background */
+.animated-bg {
+  background: linear-gradient(120deg, #ff5f6d, #ffc371, #ff5f6d);
+  background-size: 300% 300%;
+  animation: moveGradient 6s ease infinite;
+}
+@keyframes moveGradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Logo Dance */
+.logo-container {
+  animation: logoDance 3s ease-in-out infinite;
+  transition: transform 0.4s ease;
+}
+.logo-container:hover {
+  transform: rotate(4deg) scale(1.08);
+}
+@keyframes logoDance {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+/* Fade-in */
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Toast pop */
+@keyframes toastPop {
+  0%   { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+
+/* ===================== BUTTON EFFECTS ===================== */
+
+button {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(255, 94, 0, 0.4);
+}
+button:active {
+  transform: scale(0.92);
+}
+
+
+/* ===================== CARD ANIMATIONS ===================== */
+
+.card, .produk, .order-card {
+  animation: slideIn 0.6s ease forwards;
+  opacity: 0;
+}
+@keyframes slideIn {
+  0%   { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Card hover */
+.produk {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.produk:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+
+
+/* ===================== TOAST SYSTEM ===================== */
+
+#toast-container {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+}
+
+.toast {
+  background: #333;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: toastAnim 0.5s forwards;
+}
+
+@keyframes toastAnim {
+  0%   { opacity: 0; transform: translateY(20px); }
+  30%  { opacity: 1; transform: translateY(0); }
+  80%  { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(20px); }
+}
+
+
+/* ===================== GLOBAL THEME ===================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+  --bg1: #fcb69f;
+  --bg2: #ffecd2;
+  --bg3: #a1c4fd;
+  --bg4: #c2e9fb;
+  --accent1: #ff6a00;
+  --accent2: #ee0979;
+  --card: #ffffffb0;
+  --text: #222;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  min-height: 100vh;
+  font-family: 'Poppins', system-ui, sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3), var(--bg4));
+  background-size: 400% 400%;
+  animation: grad 12s ease infinite alternate;
+  padding-bottom: 40px;
+}
+@keyframes grad {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+/* ===================== HEADER ===================== */
+
+header {
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(8px);
+  padding: 18px;
+  text-align: center;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+header h1 {
+  color: #333;
+  font-size: 2rem;
+  text-shadow: 0 0 10px rgba(255,255,255,0.6);
+}
+
+.gradient {
+  color: transparent;
+  background: linear-gradient(135deg, #0b3d0b, #4caf50);
+  -webkit-background-clip: text;
+  font-family: 'Great Vibes', cursive;
+}
+
+
+/* ===================== LOGO ===================== */
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px;
+}
+.logo-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 12px rgba(255,255,255,0.5);
+}
+.logo-text {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+  text-shadow: 0 0 6px rgba(255,255,255,0.5);
+}
+
+
+/* ===================== NAVIGATION ===================== */
+
+nav {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 12px 0;
+}
+nav button {
+  border: none;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 6px 18px rgba(255,255,255,0.5);
+}
+
+
+/* ===================== CONTAINERS ===================== */
+
+.container {
+  max-width: 1100px;
+  margin: 18px auto;
+  padding: 14px;
+}
+
+.card {
+  background: var(--card);
+  padding: 12px;
+  border-radius: 14px;
+  box-shadow: 0 8px 36px rgba(0,0,0,0.06);
+  margin-bottom: 12px;
+}
+
+.flex { display: flex; gap: 12px; }
+.center { text-align: center; }
+
+
+/* ===================== PRODUCT GRID ===================== */
+
+.produk-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+.produk {
+  background: rgba(255,255,255,0.6);
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+.produk img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.produk .title,
+.produk .price {
+  font-weight: 700;
+  color: #333;
+}
+
+.qty-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.qty-group input[type="number"] {
+  width: 78px;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+
+
+/* ===================== BUTTON STYLE ===================== */
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: #333;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.12);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.muted {
+  color: #333;
+  font-size: 0.9rem;
+}
+
+
+/* ===================== SELLER AREA ===================== */
+
+.login-box {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 12px;
+}
+.login-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.order-card {
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+}
+
+.order-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-items {
+  margin-top: 8px;
+  border-top: 1px dashed rgba(0,0,0,0.06);
+  padding-top: 8px;
+}
+
+.small {
+  font-size: 0.88rem;
+  color: #333;
+}
+
+
+/* ===================== FOOTER ===================== */
+
+footer {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: 300;
+  color: #333;
+}
+
+
+/* ===================== RESPONSIVE ===================== */
+
+@media (max-width: 640px) {
+  nav { flex-wrap: wrap; }
+  header h1 { font-size: 1.1rem; }
+}
+  </style>
 </head>
 <body>
   <header>
-    <h1 class="gradient">KantinKenangan — SMAN 1 BANGKALAN</h1>
+ <h1 class="gradient">KantinKenangan — SMAN 1 BANGKALAN</h1>
   </header>
 
-  <h1>
-    <div class="logo-container">
-      <img src="https://c.termai.cc/i94/pR65b.png" class="logo-img" alt="Logo">
-      <span class="logo-text">Menu Kantin Kenangan Smansaba</span>
-    </div>
-  </h1>
-
-  <div id="toast-container"></div>
-
+<h1>
+  <div class="logo-container">
+    <img src="https://c.termai.cc/i94/pR65b.png" class="logo-img" alt="Logo">
+    <span class="logo-text">Menu Kantin Kenangan Smansaba</span>
+  </div>
+</h1>
+<div id="toast-container"></div>
   <div class="container">
     <nav>
       <button id="nav-pembeli">Halaman Pembeli</button>
@@ -29,61 +415,369 @@
 
     <!-- ========== PAGE: PEMBELI ========== -->
     <main id="page-pembeli" class="card">
-      <section class="center">
-        <h2 class="menu-title">🍽️ Menu Makanan & Minuman</h2>
+      <section class="center" aria-labelledby="menu-title">
+        <h2 id="menu-title" style="color:#333;text-shadow:0 0 12px rgba(255,255,255,0.6)">🍽️ Menu Makanan & Minuman</h2>
       </section>
 
-      <section class="card">
-        <div class="input-name-box">
-          <label>Nama Pembeli:</label>
-          <input id="input-nama" type="text" placeholder="Masukkan nama (wajib)" />
+      <section style="margin-top:10px" class="card">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center">
+          <label style="font-weight:700;color:#222">Nama Pembeli</label>
+          <input id="input-nama" type="text" placeholder="Masukkan nama (wajib)" style="padding:8px;border-radius:8px;border:1px solid rgba(0,0,0,0.12)" />
         </div>
       </section>
 
       <section class="card">
-        <div class="produk-grid" id="produk-grid"></div>
+        <div class="produk-grid" id="produk-grid"><!-- Produk akan dirender di sini --></div>
       </section>
 
-      <section class="center">
+      <section class="center" style="margin-top:10px">
         <button id="btn-pesan" class="btn-primary">Pesan Sekarang</button>
-        <p id="summary" class="muted"></p>
+        <p id="summary" class="muted" style="margin-top:8px"></p>
       </section>
     </main>
 
     <!-- ========== PAGE: PENJUAL ========== -->
     <aside id="page-penjual" class="card" style="display:none">
       <section class="center">
-        <h2 class="white-title">📥 Panel Penjual</h2>
+        <h2 style="color:#fff;text-shadow:0 0 12px rgba(255,255,255,0.6)">📥 Panel Penjual</h2>
       </section>
 
+      <!-- LOGIN -->
       <div id="seller-login" class="login-box card">
         <h3 class="center">Login Penjual</h3>
         <input id="seller-username" placeholder="Username" />
         <input id="seller-password" type="password" placeholder="Password" />
-        <div class="login-btns">
+        <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
           <button id="seller-login-btn" class="btn-primary">Login</button>
           <button id="seller-show-cred" class="btn-outline">Lihat Creds</button>
         </div>
-        <p class="small center">Default: <strong>admin</strong> / <strong>1234</strong></p>
+        <p class="small center" style="margin-top:8px">Default: <strong>admin</strong> / <strong>1234</strong></p>
       </div>
 
+      <!-- DASHBOARD -->
       <div id="seller-dashboard" style="display:none">
-        <div class="dashboard-btns">
+        <div style="display:flex;gap:8px;justify-content:center;margin-bottom:8px">
           <button id="seller-logout" class="btn-outline">Logout</button>
           <button id="export-csv" class="btn-outline">Export CSV</button>
           <button id="clear-all" class="btn-primary">Hapus Semua</button>
         </div>
-        <div id="orders" class="orders-list"></div>
+        <div id="orders" class="orders-list"><!-- Pesanan akan muncul di sini --></div>
       </div>
     </aside>
 
-    <div id="toast"></div>
+    <div id="toast" style="position:fixed;right:20px;bottom:20px;padding:12px 14px;border-radius:12px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;display:none;box-shadow:0 12px 36px rgba(0,0,0,0.12)"></div>
 
     <footer>
-      <h1 class="gradient" style="font-size:16px;">Made by Rifan — SupportBy Robotik, Smansaba</h1>
-    </footer>
+ <h1 class="gradient" style="font.size: 16px;">Made by Rifan — SupportBy Robotik, Smansaba</h1>
+</footer>
   </div>
 
-  <script src="app.js"></script>
+  <script>
+  /* ======================================================
+     CLEAN & FIXED JS
+     - Single source PRODUCTS
+     - Render produk
+     - Validasi + total numeric
+     - Prevent duplicate order by signature
+     - Seller login via sessionStorage
+     - Export CSV & delete
+  ====================================================== */
+
+  (function(){
+    'use strict';
+
+    /* ---------- DATA ------------- */
+    const PRODUCTS = [
+      { id:'mie_ayam', title:'Mie Ayam', price:12000, img:'https://c.termai.cc/i39/gb1NO6P.jpg' },
+      { id:'bakso', title:'Penyetan', price:10000, img:'https://c.termai.cc/i48/vlAh.jpg' },
+      { id:'nasi_goreng', title:'Ayam Geprek', price:10000, img:'https://c.termai.cc/i21/YvQ.jpg' },
+      { id:'terang_bulan', title:'Terang Bulan', price:5000, img:'https://c.termai.cc/i35/FkZ1u2.jpg' },
+      { id:'air_mineral', title:'Air Mineral', price:3000, img:'https://c.termai.cc/i41/BeSEYB5.jpg' },
+      { id:'jus_jeruk', title:'Jus Jeruk', price:6000, img:'https://c.termai.cc/i34/jdUw.jpg' },
+      { id:'kopi', title:'Kopi', price:6000, img:'https://c.termai.cc/i99/2hp.jpg' },
+      { id:'teh', title:'Teh', price:4000, img:'https://c.termai.cc/i54/E2ay.jpg' }
+    ];
+
+    const STORAGE_KEY = 'fannstore_orders_v3';
+    const ADMIN = { username: 'admin', password: '1234' };
+
+    /* ---------- UTIL ---------- */
+    function $(sel){ return document.querySelector(sel) }
+    function $all(sel){ return Array.from(document.querySelectorAll(sel)) }
+    function showToast(msg, ms = 2200){
+      const t = $('#toast');
+      t.textContent = msg; t.style.display = 'block';
+      setTimeout(()=> t.style.display = 'none', ms);
+    }
+    function formatIDR(n){ return new Intl.NumberFormat('id-ID').format(n) }
+
+    function escapeHtml(str=''){
+      return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+    }
+
+    /* ---------- STORAGE HELPERS ---------- */
+    function loadOrders(){
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      }catch(e){
+        console.error('Gagal load storage, reset.', e);
+        localStorage.removeItem(STORAGE_KEY);
+        return [];
+      }
+    }
+    function saveOrders(arr){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    /* ---------- RENDER PRODUK (Pembeli) ---------- */
+    const produkGrid = $('#produk-grid');
+    function renderProduk(){
+      produkGrid.innerHTML = '';
+      PRODUCTS.forEach(p=>{
+        const el = document.createElement('div');
+        el.className = 'produk';
+        el.innerHTML = `
+          <img src="${p.img}" alt="${escapeHtml(p.title)}">
+          <div class="title">${escapeHtml(p.title)}</div>
+          <div class="price">Rp ${formatIDR(p.price)}</div>
+          <div class="qty-group">
+            <label class="small">Jumlah</label>
+            <input type="number" min="0" value="0" data-id="${p.id}" data-price="${p.price}" aria-label="qty-${p.id}">
+          </div>
+        `;
+        produkGrid.appendChild(el);
+      });
+    }
+    renderProduk();
+
+    /* ---------- PEMESANAN ---------- */
+    const btnPesan = $('#btn-pesan');
+    const inputNama = $('#input-nama');
+    const summary = $('#summary');
+
+    function buildOrderSignature(items){
+      // signature untuk deteksi duplikat: sorted id:qty pairs
+      const pairs = items.map(it => `${it.id}:${it.qty}`).sort();
+      return pairs.join('|');
+    }
+
+    function isDuplicateOrder(nama, signature){
+      const orders = loadOrders();
+      const normalizedNama = String(nama||'').trim().toLowerCase();
+      return orders.some(o => (String(o.nama||'').trim().toLowerCase() === normalizedNama) && (o.signature === signature));
+    }
+
+    btnPesan.addEventListener('click', function(){
+      summary.textContent = '';
+      const nama = String(inputNama.value || '').trim();
+      if(!nama){
+        summary.style.color = 'darkred';
+        summary.textContent = 'Nama wajib diisi sebelum memesan.';
+        showToast('Isi nama dulu ya :)');
+        return;
+      }
+
+      // ambil qty
+      const qtyInputs = $all('.qty-group input[type="number"]');
+      const chosen = qtyInputs.map(inp=>{
+        const id = inp.dataset.id;
+        const price = Number(inp.dataset.price) || 0;
+        const qtyRaw = inp.value;
+        // validasi angka: non-numeric => 0
+        const qty = Math.max(0, Math.floor(Number(qtyRaw) || 0));
+        return { id, qty, price };
+      }).filter(x => x.qty > 0);
+
+      if(chosen.length === 0){
+        summary.style.color = 'darkred';
+        summary.textContent = 'Silakan pilih minimal 1 item (jumlah > 0).';
+        showToast('Belum pilih barang');
+        return;
+      }
+
+      // build items with titles and compute total
+      const items = chosen.map(c=>{
+        const p = PRODUCTS.find(pp => pp.id === c.id);
+        return { id: c.id, title: p ? p.title : c.id, qty: c.qty, price: c.price };
+      });
+
+      const signature = buildOrderSignature(items);
+      if(isDuplicateOrder(nama, signature)){
+        summary.style.color = 'darkred';
+        summary.textContent = 'Pesanan sama sudah pernah dikirim sebelumnya (detected duplicate).';
+        showToast('Pesanan duplikat');
+        return;
+      }
+
+      const total = items.reduce((s,it)=> s + (Number(it.price) * Number(it.qty)), 0);
+
+      // simpan
+      const order = {
+        id: 'ord_' + Date.now(),
+        nama: nama,
+        items: items,
+        total: total,
+        waktu: new Date().toLocaleString('id-ID'),
+        signature: signature
+      };
+      const orders = loadOrders();
+      orders.push(order);
+      saveOrders(orders);
+
+      // respon UI
+      summary.style.color = '#0a5';
+      const list = items.map(it => `${it.title} x${it.qty}`).join(', ');
+      summary.innerHTML = `<strong>${escapeHtml(nama)}</strong> memesan: ${escapeHtml(list)} — Total Rp ${formatIDR(total)}`;
+      showToast('Pesanan Berhasil Dibuat!');
+
+      // reset qty (bila ingin dibiarkan, hapus baris ini)
+      qtyInputs.forEach(i=> i.value = 0);
+
+      // jika seller dashboard aktif, refresh
+      if($('#seller-dashboard').style.display !== 'none'){
+        renderOrders();
+      }
+    });
+
+    /* ---------- NAVIGATION ---------- */
+    $('#nav-pembeli').addEventListener('click', ()=>{ $('#page-pembeli').style.display = ''; $('#page-penjual').style.display = 'none'; });
+    $('#nav-penjual').addEventListener('click', ()=>{ $('#page-pembeli').style.display = 'none'; $('#page-penjual').style.display = ''; checkSellerAuth(); });
+
+    /* ---------- SELLER AUTH & DASHBOARD ---------- */
+    function checkSellerAuth(){
+      const logged = sessionStorage.getItem('fann_logged') === '1';
+      if(logged){
+        $('#seller-login').style.display = 'none';
+        $('#seller-dashboard').style.display = '';
+        renderOrders();
+      }else{
+        $('#seller-login').style.display = '';
+        $('#seller-dashboard').style.display = 'none';
+      }
+    }
+    checkSellerAuth();
+
+    $('#seller-show-cred').addEventListener('click', ()=> alert(`Default credentials:\nusername: ${ADMIN.username}\npassword: ${ADMIN.password}`));
+
+    $('#seller-login-btn').addEventListener('click', ()=>{
+      const u = String($('#seller-username').value || '');
+      const p = String($('#seller-password').value || '');
+      if(u === ADMIN.username && p === ADMIN.password){
+        sessionStorage.setItem('fann_logged','1');
+        showToast('Login sukses');
+        checkSellerAuth();
+      }else{
+        showToast('Login gagal — cek username/password');
+      }
+    });
+
+    $('#seller-logout').addEventListener('click', ()=>{
+      sessionStorage.removeItem('fann_logged');
+      showToast('Logout');
+      checkSellerAuth();
+    });
+
+    /* ---------- RENDER ORDER (PENJUAL) ---------- */
+    function renderOrders(){
+      const ordersEl = $('#orders');
+      const orders = loadOrders().slice().reverse(); // latest first
+      ordersEl.innerHTML = '';
+      if(orders.length === 0){
+        ordersEl.innerHTML = '<p class="center small">Belum ada pesanan.</p>';
+        return;
+      }
+
+      orders.forEach(o=>{
+        const card = document.createElement('div');
+        card.className = 'order-card';
+        card.innerHTML = `
+          <div class="order-row">
+            <div>
+              <strong>${escapeHtml(o.nama)}</strong><br>
+              <span class="small">ID: ${escapeHtml(o.id)} — ${escapeHtml(o.waktu)}</span>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:800">Rp ${formatIDR(o.total)}</div>
+            </div>
+          </div>
+          <div class="order-items small">
+            ${o.items.map(it => `<div style="display:flex;justify-content:space-between;margin:4px 0"><div>${escapeHtml(it.title)} x${it.qty}</div><div>Rp ${formatIDR(it.qty * it.price)}</div></div>`).join('')}
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+            <button class="btn-outline btn-delete" data-id="${o.id}">Hapus</button>
+            <button class="btn-outline btn-mark" data-id="${o.id}">Tandai Selesai</button>
+          </div>
+        `;
+        ordersEl.appendChild(card);
+      });
+
+      // event delegasi untuk delete & mark
+      ordersEl.querySelectorAll('.btn-delete').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const id = btn.dataset.id;
+          if(!confirm('Hapus pesanan ini?')) return;
+          const remaining = loadOrders().filter(x => x.id !== id);
+          saveOrders(remaining);
+          renderOrders();
+          showToast('Pesanan dihapus');
+        });
+      });
+      ordersEl.querySelectorAll('.btn-mark').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const id = btn.dataset.id;
+          const card = btn.closest('.order-card');
+          if(card){
+            card.style.opacity = '0.6';
+            card.style.textDecoration = 'line-through';
+            showToast('Ditandai selesai');
+          }
+        });
+      });
+    }
+
+    /* ---------- CLEAR ALL / EXPORT CSV ---------- */
+    $('#clear-all').addEventListener('click', ()=>{
+      if(!confirm('Yakin hapus semua pesanan?')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      renderOrders();
+      showToast('Semua pesanan dihapus');
+    });
+
+    function ordersToCSV(orders){
+      if(!orders || orders.length === 0) return '';
+      const headers = ['id','nama','waktu','items','total'];
+      const rows = orders.map(o => {
+        const itemsStr = o.items.map(it => `${it.title} x${it.qty}`).join('; ');
+        return [o.id, o.nama, o.waktu, itemsStr, o.total];
+      });
+      const all = [headers, ...rows];
+      return all.map(r => r.map(cell => `"${String(cell).replaceAll('"','""')}"`).join(',')).join('\r\n');
+    }
+
+    $('#export-csv').addEventListener('click', ()=>{
+      const orders = loadOrders();
+      if(orders.length === 0){ showToast('Tidak ada pesanan untuk di-export'); return; }
+      const csv = ordersToCSV(orders);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'fannstore_orders.csv'; document.body.appendChild(a); a.click();
+      a.remove(); URL.revokeObjectURL(url);
+      showToast('CSV ter-download');
+    });
+
+    /* ---------- INIT ---------- */
+    // show last order summary if ada
+    (function initSummary(){
+      const orders = loadOrders();
+      if(orders.length){
+        const last = orders[orders.length - 1];
+        $('#summary').innerHTML = `Pesanan terakhir: <strong>${escapeHtml(last.nama)}</strong> — Rp ${formatIDR(last.total)} (${escapeHtml(last.waktu)})`;
+      }
+    })();
+
+  })();
+  </script>
 </body>
 </html>
