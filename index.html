@@ -59,8 +59,8 @@ body {
 }
 @keyframes logoDance {
   0%   { transform: scale(1); }
-  50%  { transform: scale(1.06); }
-  100% { transform: scale(1); }
+  25%  { transform: scale(1.06); }
+  50% { transform: scale(1); }
 }
 
 /* Fade-in */
@@ -72,7 +72,7 @@ body {
 /* Toast pop */
 @keyframes toastPop {
   0%   { opacity: 0; transform: scale(0.85); }
-  100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1); }
 }
 
 
@@ -437,7 +437,7 @@ footer {
 
   <h1>
     <div class="logo-container">
-      <img src="https://c.termai.cc/i94/pR65b.png" class="logo-img" alt="Logo">
+      <img src="https://c.termai.cc/i97/7JEO.webp" class="logo-img" alt="Logo">
       <span class="logo-text">Menu Kantin Kenangan Smansaba</span>
     </div>
   </h1>
@@ -525,7 +525,7 @@ footer {
     <div id="toast" style="position:fixed;right:20px;bottom:20px;padding:12px 14px;border-radius:12px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:white;display:none;box-shadow:0 12px 36px rgba(0,0,0,0.12)"></div>
 
     <footer>
- <h1 class="gradient" style="font.size: 16px;">Made by Team 8 — RifanWildan </h1>
+ <h3 class="gradient" style="font.size: 16px;">Made by Team 8 — RifanWildan </h3>
 </footer>
   </div>
 
@@ -569,6 +569,11 @@ document.getElementById("struk").addEventListener("click", () => {
 
     // tampilkan page struk
     document.getElementById("page-struk").style.display = "block";
+
+     //kembali ke page penjual
+     document.getElementById("page-struk").style.display = "none";
+     document.getElementById("seller-dashboard").style.display = "block";
+     document.getElementById("page-penjual").style.display = "block";
 });
 
 
